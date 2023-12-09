@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Details</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .details-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .comments-container {
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .review-section {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar fixed-top bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index2.html">BACK</a>
+        </div>
+      </nav>
+
+    <div class="details-container" id="detailsContainer">
+        <!-- Details will be dynamically added here using JavaScript -->
+    </div>
+
+    <div class="comments-container">
+        <textarea id="commentInput" placeholder="Add your comments..."></textarea>
+        <button onclick="submitComment()">Submit Comment</button>
+    </div>
+
+    <div class="review-section" id="reviewSection">
+        <!-- Comments will be dynamically added here using JavaScript -->
+    </div>
+
+    <script>
+        // Built-in details
+        var builtInDetails = {
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "phone": "+1 (123) 456-7890",
+            "university": "Example University"
+        };
+
+        // Display built-in details
+        displayDetails(builtInDetails);
+
+        function displayDetails(details) {
+            var detailsContainer = document.getElementById('detailsContainer');
+            detailsContainer.innerHTML = '';
+
+            for (var key in details) {
+                var detailElement = document.createElement('p');
+                detailElement.textContent = `${key.charAt(0).toUpperCase() + key.slice(1)}: ${details[key]}`;
+                detailsContainer.appendChild(detailElement);
+            }
+        }
+
+        function submitComment() {
+            var commentInput = document.getElementById('commentInput');
+            var comment = commentInput.value;
+
+            if (comment.trim() !== '') {
+                // Fetch existing comments from local storage
+                var comments = JSON.parse(localStorage.getItem('comments')) || [];
+
+                // Add new comment
+                comments.push(comment);
+
+                // Save comments back to local storage
+                localStorage.setItem('comments', JSON.stringify(comments));
+
+                // Clear comment input
+                commentInput.value = '';
+
+                // Display updated comments
+                displayComments();
+            }
+        }
+
+        function displayComments() {
+            var comments = JSON.parse(localStorage.getItem('comments')) || [];
+            var reviewSection = document.getElementById('reviewSection');
+            reviewSection.innerHTML = '';
+
+            comments.forEach(function(comment, index) {
+                var commentElement = document.createElement('p');
+                commentElement.textContent = `Comment ${index + 1}: ${comment}`;
+                reviewSection.appendChild(commentElement);
+            });
+        }
+
+        // Display existing comments on page load
+        displayComments();
+    </script>
+
+</body>
+</html>
